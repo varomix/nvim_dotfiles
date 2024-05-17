@@ -67,6 +67,8 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.bo.softtabstop = 4
 
+vim.wo.wrap = false
+
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
@@ -85,7 +87,8 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- MIX Shortcuts
 vim.keymap.set("n", "<leader>cr", "<cmd>CMakeRun<CR>")
-vim.keymap.set("n", "<leader>cc", "<cmd>!make && make run<CR>")
+-- vim.keymap.set("n", "<leader>cc", "<cmd>!make && make run<CR>")
+vim.keymap.set("n", "<leader>cc", "<cmd>!zig build run<CR>")
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 
 -- Diagnostic keymaps
@@ -526,7 +529,7 @@ require("lazy").setup({
 				pyright = {},
 				-- rust_analyzer = {},
 				ols = {},
-				-- zls = {},
+				zls = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -851,9 +854,28 @@ require("lazy").setup({
 	},
 })
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
-
 require("scrollEOF").setup()
 require("overseer").setup()
 require("toggleterm").setup()
+-- require("jails").setup({})
+-- local lsp = require("lspconfig")
+-- lsp.jails.setup({})
+
+-- lspconfig.jails.setup({})
+--
+local lspconfig = require("lspconfig")
+local configs = require("lspconfig.configs")
+
+if not configs.jails then
+	configs.jails = {
+		default_config = {
+			cmd = { "/Users/varomix/dev/JAI_DEV/Jails/bin/jails" },
+			filetypes = { "jai" },
+		},
+	}
+end
+
+lspconfig.jails.setup({})
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et

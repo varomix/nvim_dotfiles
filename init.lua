@@ -76,7 +76,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 20
+vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -86,9 +86,10 @@ vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- MIX Shortcuts
-vim.keymap.set("n", "<leader>cr", "<cmd>CMakeRun<CR>")
+-- vim.keymap.set("n", "<leader>cr", "<cmd>CMakeRun<CR>")
 -- vim.keymap.set("n", "<leader>cc", "<cmd>!make && make run<CR>")
-vim.keymap.set("n", "<leader>cc", "<cmd>!zig build run<CR>")
+-- vim.keymap.set("n", "<leader>cc", "<cmd>!zig build run<CR>")
+vim.keymap.set("n", "<leader>cc", "<cmd>!odin run .<CR>")
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 
 -- Diagnostic keymaps
@@ -204,9 +205,11 @@ require("lazy").setup({
 		"nvim-telescope/telescope-file-browser.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	},
+
+	{ "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 	-- { "CRAG666/code_runner.nvim", opts = {} },
 
-	{ "Civitasv/cmake-tools.nvim", opts = {} },
+	-- { "Civitasv/cmake-tools.nvim", opts = {} },
 
 	{ "ray-x/lsp_signature.nvim", opts = {} },
 
@@ -766,17 +769,17 @@ require("lazy").setup({
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
+			-- local statusline = require("mini.statusline")
 			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
+			-- statusline.setup({ use_icons = vim.g.have_nerd_font })
 
 			-- You can configure sections in the statusline by overriding their
 			-- default behavior. For example, here we set the section for
 			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
+			-- @diagnostic disable-next-line: duplicate-set-field
+			-- statusline.section_location = function()
+			-- return "%2l:%-2v"
+			-- end
 
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
@@ -857,25 +860,11 @@ require("lazy").setup({
 require("scrollEOF").setup()
 require("overseer").setup()
 require("toggleterm").setup()
--- require("jails").setup({})
--- local lsp = require("lspconfig")
--- lsp.jails.setup({})
-
--- lspconfig.jails.setup({})
---
-local lspconfig = require("lspconfig")
-local configs = require("lspconfig.configs")
-
-if not configs.jails then
-	configs.jails = {
-		default_config = {
-			cmd = { "/Users/varomix/dev/JAI_DEV/Jails/bin/jails" },
-			filetypes = { "jai" },
-		},
-	}
-end
-
-lspconfig.jails.setup({})
+require("lualine").setup({
+	options = {
+		theme = "powerline",
+	},
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

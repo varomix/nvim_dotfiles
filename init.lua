@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -11,6 +13,9 @@ vim.g.have_nerd_font = true
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
+--  MIX OPTIONS
+-- hide command line
+vim.o.cmdheight = 0
 
 -- Make line numbers default
 vim.opt.number = true
@@ -86,8 +91,10 @@ vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- MIX Shortcuts
+vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- vim.keymap.set("n", "<leader>cr", "<cmd>CMakeRun<CR>")
--- vim.keymap.set("n", "<leader>cc", "<cmd>!make && make run<CR>")
+vim.keymap.set("n", "<leader>cm", "<cmd>!make && make run<CR>")
 -- vim.keymap.set("n", "<leader>cc", "<cmd>!zig build run<CR>")
 vim.keymap.set("n", "<leader>cc", "<cmd>!odin run .<CR>")
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
@@ -180,6 +187,12 @@ require("lazy").setup({
 	} },
 
 	{ "CRAG666/betterTerm.nvim", opts = {} },
+	{
+		"VonHeikemen/fine-cmdline.nvim",
+		dependencies = {
+			{ "MunifTanjim/nui.nvim" },
+		},
+	},
 
 	{
 		"smoka7/multicursors.nvim",
@@ -199,12 +212,19 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"stevearc/oil.nvim",
+		opts = {},
+		-- Optional dependencies
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+
 	{ "rluba/jai.vim" },
 
-	{
-		"nvim-telescope/telescope-file-browser.nvim",
-		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-	},
+	-- {
+	-- 	"nvim-telescope/telescope-file-browser.nvim",
+	-- 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+	-- },
 
 	{ "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 	-- { "CRAG666/code_runner.nvim", opts = {} },

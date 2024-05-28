@@ -13,9 +13,11 @@ vim.g.have_nerd_font = true
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
---  MIX OPTIONS
+--
+-- MIX OPTIONS
 -- hide command line
-vim.o.cmdheight = 0
+-- vim.o.cmdheight = 0
+vim.opt.title = true
 
 -- Make line numbers default
 vim.opt.number = true
@@ -91,7 +93,7 @@ vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- MIX Shortcuts
-vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
+-- vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- vim.keymap.set("n", "<leader>cr", "<cmd>CMakeRun<CR>")
 vim.keymap.set("n", "<leader>cm", "<cmd>!make && make run<CR>")
@@ -187,10 +189,20 @@ require("lazy").setup({
 	} },
 
 	{ "CRAG666/betterTerm.nvim", opts = {} },
+
 	{
-		"VonHeikemen/fine-cmdline.nvim",
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
 		dependencies = {
-			{ "MunifTanjim/nui.nvim" },
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			-- "rcarriga/nvim-notify",
 		},
 	},
 
@@ -546,13 +558,13 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				asm_lsp = {},
+				-- asm_lsp = {},
 				clangd = {},
-				-- gopls = {},
-				pyright = {},
+				gopls = {},
+				-- pyright = {},
 				-- rust_analyzer = {},
 				ols = {},
-				zls = {},
+				-- zls = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -881,10 +893,40 @@ require("scrollEOF").setup()
 require("overseer").setup()
 require("toggleterm").setup()
 require("lualine").setup({
+	sections = {
+		lualine_c = {
+			{
+				"filename",
+				path = 4,
+			},
+		},
+	},
 	options = {
 		theme = "powerline",
 	},
 })
 
+require("noice").setup({
+	lsp = {
+		-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+		override = {
+			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+			["vim.lsp.util.stylize_markdown"] = true,
+			["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+		},
+		signature = {
+			enabled = false,
+		},
+	},
+	-- you can enable a preset for easier configuration
+	presets = {
+		bottom_search = true, -- use a classic bottom cmdline for search
+		command_palette = true, -- position the cmdline and popupmenu together
+		long_message_to_split = true, -- long messages will be sent to a split
+		inc_rename = false, -- enables an input dialog for inc-rename.nvim
+		lsp_doc_border = false, -- add a border to hover docs and signature help
+	},
+})
+
 -- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- iim: ts=2 sts=2 sw=2 et

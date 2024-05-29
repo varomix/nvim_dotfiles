@@ -238,7 +238,7 @@ require("lazy").setup({
 	-- 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	-- },
 
-	{ "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
+	-- { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 	-- { "CRAG666/code_runner.nvim", opts = {} },
 
 	-- { "Civitasv/cmake-tools.nvim", opts = {} },
@@ -892,19 +892,19 @@ require("lazy").setup({
 require("scrollEOF").setup()
 require("overseer").setup()
 require("toggleterm").setup()
-require("lualine").setup({
-	sections = {
-		lualine_c = {
-			{
-				"filename",
-				path = 4,
-			},
-		},
-	},
-	options = {
-		theme = "powerline",
-	},
-})
+-- require("lualine").setup({
+-- 	sections = {
+-- 		lualine_c = {
+-- 			{
+-- 				"filename",
+-- 				path = 4,
+-- 			},
+-- 		},
+-- 	},
+-- 	options = {
+-- 		theme = "powerline",
+-- 	},
+-- })
 
 require("noice").setup({
 	lsp = {
